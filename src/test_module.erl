@@ -31,30 +31,19 @@ init(_) ->
   {ok, #state{}}.
 
 import(Key, TimeStamp, Value) ->
-  gen_server:call(?MODULE, {import, Key, TimeStamp, Value}).
-
-export(Key, TimeStamp) ->
-  gen_server:call(?MODULE, {export, Key, TimeStamp}).
-
-handle_call({import, Key, TimeStamp, Value}, _From, State) ->
   NewRecord = {Key, TimeStamp, Value},
   io:format("Importing record: ~p~n", [NewRecord]),
   ets:insert(state, NewRecord),
-  {reply, ok, State};
+  ok.
 
-
-
-handle_call({export, Key, TimeStamp}, _From, State) ->
+export(Key, TimeStamp) ->
   Result = ets:lookup(state, Key),
   Result1 = [El || {_Key, TIme, _Value} = El <- Result, TIme > TimeStamp],
-  {reply, Result1, State};
-
-
+  Result1.
 
 handle_call(Msg, _From, State) ->
   io:format("unexpected message ~p", [Msg]),
   {reply, ok , State}.
-
 
 handle_cast(_Msg, State) ->
   {noreply, State}.
