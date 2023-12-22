@@ -5,6 +5,7 @@
 -export([stop/1]).
 
 start(_Type, _Args) ->
+	lager:info("Start proces service"),
 	Dispatch = cowboy_router:compile([
 	 {'_',[{"/[...]", test_project_handler, []}]}
 ]),
@@ -15,4 +16,5 @@ start(_Type, _Args) ->
 
 
 stop(_State) ->
+	lager:info("Stop service:ok ~p", [ok]),
 	ok.

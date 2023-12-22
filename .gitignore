@@ -2,3 +2,4 @@ ebin/
 deps/
 .erlang.mk
 .DS_Store
+log/
