@@ -10,7 +10,20 @@
 -author("davyd").
 
 %% API
--export([import/1, export/1]).
+-export([login/1, logout/1, import/1, export/1]).
+
+login(Json) ->
+  Decode = jsx:decode(Json),
+  Name = maps:get(<<"Name">>, Decode),
+  Password = maps:get(<<"Password">>, Decode),
+  Res = test_project_user:find_users(Name, Password),
+  jsx:encode(Res).
+
+logout(Json) ->
+  Decode = jsx:decode(Json),
+  Key = maps:get(<<"SessioneId">>, Decode),
+  Res = test_project_session:close_session(Key),
+  jsx:encode(Res).
 
 import(Json) ->
   Decode = jsx:decode(Json),
