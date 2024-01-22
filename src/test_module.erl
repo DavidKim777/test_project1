@@ -34,6 +34,7 @@ import(Key, TimeStamp, Value) ->
   NewRecord = {Key, TimeStamp, Value},
   io:format("Importing record: ~p~n", [NewRecord]),
   ets:insert(state, NewRecord),
+  test_project_db_srv:equery("INSERT INTO test_module(key, value) VALUES ($1, $2);", [Key, Value]),
   ok.
 
 export(Key, TimeStamp) ->
